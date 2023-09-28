@@ -75,10 +75,6 @@ cd Sopha-Test-Api
     rails s
     # Brower: http://localhost:3000
     # Press: CTRL+C
-    git status
-    git add .
-    git commit -m 'create'
-    git push
     exit
   docker compose down
 ```
