@@ -60,3 +60,25 @@ As seguintes requisições devem ser possíveis:
 
  - Funcionalidade
  - Boas práticas
+
+## develop
+
+```sh
+cd Sopha-Test-Api
+	ARG_USER_UID=$(id -u) ARG_USER_GID=$(id -g) docker compose config
+  ARG_USER_UID=$(id -u) ARG_USER_GID=$(id -g) docker compose build
+  docker compose up -d
+  docker compose exec app bash
+    bundle
+    rails db:drop db:create db:migrate db:seed
+		rspec
+    rails s
+    # Brower: http://localhost:3000
+    # Press: CTRL+C
+    git status
+    git add .
+    git commit -m 'create'
+    git push
+    exit
+  docker compose down
+```

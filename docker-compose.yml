@@ -1,20 +1,41 @@
-version: "3.3"
+version: '3.8'
 services:
-  db:
-    image: postgres
-    volumes:
-      - /tmp/db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-  web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/myapp
-    ports:
-      - '3000:3000'
+  app:
+    build:
+      args:
+        ARG_LINUX_LOCALE: en_US.UTF-8
+        ARG_USER_UID: ${ARG_USER_UID}
+        ARG_USER_GID: ${ARG_USER_GID}
+        ARG_RUBY_VERSION: 2.7.1
+      context: .
     depends_on:
-      - db
+      - postgresql
+    working_dir: /home/user/Sopha-Test-Api
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_HOST: postgresql
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: user
+      DATABASE_PASSWORD: password
+    ports:
+      - 3000:3000
+    tty: true
+    volumes:
+      - app_local:/usr/local
+      - ~/.ssh:/home/user/.ssh
+      - ~/.gitconfig:/home/user/.gitconfig
+      - ~/.bash_history:/home/user/.bash_history
+      - .:/home/user/Sopha-Test-Api
+  postgresql:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+#    ports:
+#      - 5432:5432
+volumes:
+  app_local:
+  postgresql_data:
