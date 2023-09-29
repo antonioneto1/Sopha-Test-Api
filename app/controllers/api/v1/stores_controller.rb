@@ -1,11 +1,17 @@
 class Api::V1::StoresController < ApplicationController
+  include Paginable
+
+  before_action :authenticate_api_user!
   before_action :set_store, only: [:show, :update, :destroy]
 
   # GET /stores
   def index
-    @stores = Store.all
+    @stores = current_api_user.store.all
+                              .sorted(params[:sort], params[:dir])
+                              .page(current_page)
+                              .per(per_page)
 
-    render json: @stores
+    render json: @stores, meta: meta_attributes(@stores), adapter: :json
   end
 
   # GET /stores/1
@@ -41,7 +47,7 @@ class Api::V1::StoresController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
-      @store = Store.find(params[:id])
+      @store = current_api_user.store.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

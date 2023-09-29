@@ -5,7 +5,7 @@ class ApiConstraints
   end
 
   def matches?(req)
-    @default || req.headers['Accept'].inclede?("application/vnd.sopha_test.v#{@version}")
+    @default || req.headers['Accept'].include?("application/vnd.sopha_test.v#{@version}")
   end
 end
 
