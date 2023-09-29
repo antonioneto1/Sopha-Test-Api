@@ -6,12 +6,9 @@ class Api::V1::StoresController < ApplicationController
 
   # GET /stores
   def index
-    @stores = current_api_user.store.all
-                              .sorted(params[:sort], params[:dir])
-                              .page(current_page)
-                              .per(per_page)
+    @stores = current_api_user.stores
 
-    render json: @stores, meta: meta_attributes(@stores), adapter: :json
+    render json: @stores, status: :ok
   end
 
   # GET /stores/1
@@ -47,7 +44,7 @@ class Api::V1::StoresController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
-      @store = current_api_user.store.find(params[:id])
+      @store = current_api_user.stores.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

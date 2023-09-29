@@ -49,7 +49,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Antonio\",\n    \"email\": \"antoniocneto@gmail.com\",\n    \"password\": \"12345678\",\n    \"password_confirmation\": \"12345678\"\n}",
+									"raw": "{\n    \"name\": \"Antonio Cavalcante\",\n    \"email\": \"antoniocnet@gmail.com\",\n    \"password\": \"12345678\",\n    \"password_confirmation\": \"12345678\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -261,7 +261,102 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "uid",
+												"value": "{{email}}",
+												"type": "text"
+											},
+											{
+												"key": "access_token",
+												"value": "{{access-token}}",
+												"type": "text"
+											},
+											{
+												"key": "client",
+												"value": "{{client}}",
+												"type": "text"
+											},
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/auth/validate_token",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"validate_token"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "access-token",
+											"value": "rY_eyomcY5H1C9j4KBObhw"
+										},
+										{
+											"key": "token-type",
+											"value": "Bearer"
+										},
+										{
+											"key": "client",
+											"value": "2rAwulA0lVvBSorNAKYC5Q"
+										},
+										{
+											"key": "expiry",
+											"value": "1697227083"
+										},
+										{
+											"key": "uid",
+											"value": "antoniocnet@gmail.com"
+										},
+										{
+											"key": "Authorization",
+											"value": "Bearer eyJhY2Nlc3MtdG9rZW4iOiJyWV9leW9tY1k1SDFDOWo0S0JPYmh3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IjJyQXd1bEEwbFZ2QlNvck5BS1lDNVEiLCJleHBpcnkiOiIxNjk3MjI3MDgzIiwidWlkIjoiYW50b25pb2NuZXRAZ21haWwuY29tIn0="
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"b17ac8b16fb49e4726d382f0dd83acde\""
+										},
+										{
+											"key": "Cache-Control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "144a228e-9515-444d-8a29-0c84e95c3371"
+										},
+										{
+											"key": "X-Runtime",
+											"value": "0.003760"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 3,\n        \"provider\": \"email\",\n        \"uid\": \"antoniocnet@gmail.com\",\n        \"allow_password_change\": false,\n        \"admin\": null,\n        \"name\": \"Antonio Cavalcante\",\n        \"image\": null,\n        \"email\": \"antoniocnet@gmail.com\"\n    }\n}"
+								}
+							]
 						}
 					]
 				},
@@ -270,6 +365,33 @@
 					"item": [
 						{
 							"name": "Signin",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"baseUrl\") + '/auth',",
+											"    method: 'POST',",
+											"    header: {",
+											"        'content-type': 'application/json'",
+											"    },",
+											"    body: {",
+											"        mode: 'raw',",
+											"        raw: JSON.stringify({ ",
+											"            email: pm.environment.get(\"email\"), ",
+											"            password: pm.environment.get(\"password\") })",
+											"    }",
+											"}, function (err, res) {",
+											"    pm.environment.set(\"access-token\", res.json().access_token);",
+											"    pm.environment.set(\"client\", res.json().client);",
+											"    pm.environment.set(\"auth\", \"Bearer\", res.json().token);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -282,7 +404,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": {{email}},\n    \"password\": \"123456\"\n}",
+									"raw": "{\n    \"email\": \"antoniocnet@gmail.com\",\n    \"password\": \"12345678\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -290,16 +412,106 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/sign_in",
+									"raw": "{{baseUrl}}/auth/sign_in",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+										"auth",
 										"sign_in"
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{auth}}",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"antoniocnet@gmail.com\",\n    \"password\": \"12345678\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/sign_in",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"sign_in"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "access-token",
+											"value": "dwnUUvnXIizZfVc__Vdu8A"
+										},
+										{
+											"key": "token-type",
+											"value": "Bearer"
+										},
+										{
+											"key": "client",
+											"value": "RUOeyqtSIQmjvQnvAszLlQ"
+										},
+										{
+											"key": "expiry",
+											"value": "1697227486"
+										},
+										{
+											"key": "uid",
+											"value": "antoniocnet@gmail.com"
+										},
+										{
+											"key": "Authorization",
+											"value": "Bearer eyJhY2Nlc3MtdG9rZW4iOiJkd25VVXZuWElpelpmVmNfX1ZkdThBIiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IlJVT2V5cXRTSVFtanZRbnZBc3pMbFEiLCJleHBpcnkiOiIxNjk3MjI3NDg2IiwidWlkIjoiYW50b25pb2NuZXRAZ21haWwuY29tIn0="
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"e46eba9d1e6982eb701d8c07bc630ce9\""
+										},
+										{
+											"key": "Cache-Control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "badead6c-2b84-4858-8827-e2d5fc965d26"
+										},
+										{
+											"key": "X-Runtime",
+											"value": "0.242632"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"id\": 3,\n        \"email\": \"antoniocnet@gmail.com\",\n        \"provider\": \"email\",\n        \"name\": \"Antonio Cavalcante\",\n        \"uid\": \"antoniocnet@gmail.com\",\n        \"allow_password_change\": false,\n        \"admin\": null,\n        \"image\": null\n    }\n}"
+								}
+							]
 						},
 						{
 							"name": "Signout",
@@ -338,63 +550,6 @@
 					]
 				},
 				{
-					"name": "Passord",
-					"item": [
-						{
-							"name": "Update",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"current_password\": \"123456\",\n    \"password\": \"123456\",\n    \"password_confirmation\": \"123456\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/auth",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"auth"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Forget",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": {{email}}\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/auth",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"auth"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "Confirmation",
 					"item": [
 						{
@@ -404,7 +559,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": {{email}},\n    \"password\": \"123456\"\n}",
+									"raw": "{\n    \"email\": \"antoniocnet@gmail.com\",\n    \"password\": \"12345678\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -422,7 +577,65 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"antoniocnet@gmail.com\",\n    \"password\": \"12345678\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/confirmation",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"confirmation"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"ec62fba3f8136c9d5e3f4fb4f6795bed\""
+										},
+										{
+											"key": "Cache-Control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "X-Request-Id",
+											"value": "ea4b267d-93de-450c-aa93-f06f512481d1"
+										},
+										{
+											"key": "X-Runtime",
+											"value": "0.017931"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"message\": \"An email has been sent to 'antoniocnet@gmail.com' containing instructions for confirming your account.\"\n}"
+								}
+							]
 						}
 					]
 				}
@@ -458,7 +671,88 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/stores",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"stores"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "access-token",
+									"value": "rY_eyomcY5H1C9j4KBObhw"
+								},
+								{
+									"key": "token-type",
+									"value": "Bearer"
+								},
+								{
+									"key": "client",
+									"value": "2rAwulA0lVvBSorNAKYC5Q"
+								},
+								{
+									"key": "expiry",
+									"value": "1697227083"
+								},
+								{
+									"key": "uid",
+									"value": "antoniocnet@gmail.com"
+								},
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhY2Nlc3MtdG9rZW4iOiJyWV9leW9tY1k1SDFDOWo0S0JPYmh3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IjJyQXd1bEEwbFZ2QlNvck5BS1lDNVEiLCJleHBpcnkiOiIxNjk3MjI3MDgzIiwidWlkIjoiYW50b25pb2NuZXRAZ21haWwuY29tIn0="
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3ec9b1ae5a1fd7833f941849b4e944cd\""
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "20132c38-6e01-4746-a0d4-580392a17093"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.092089"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 5,\n        \"name\": \"Loja 2\",\n        \"created_at\": \"2023-09-29T20:09:58.281Z\",\n        \"updated_at\": \"2023-09-29T20:09:58.281Z\",\n        \"user_id\": 3\n    }\n]"
+						}
+					]
 				},
 				{
 					"name": "Show",
@@ -478,17 +772,99 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/stores/1",
+							"raw": "{{baseUrl}}/stores/6",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"stores",
-								"1"
+								"6"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/stores/6",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"stores",
+										"6"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "access-token",
+									"value": "rY_eyomcY5H1C9j4KBObhw"
+								},
+								{
+									"key": "token-type",
+									"value": "Bearer"
+								},
+								{
+									"key": "client",
+									"value": "2rAwulA0lVvBSorNAKYC5Q"
+								},
+								{
+									"key": "expiry",
+									"value": "1697227083"
+								},
+								{
+									"key": "uid",
+									"value": "antoniocnet@gmail.com"
+								},
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhY2Nlc3MtdG9rZW4iOiJyWV9leW9tY1k1SDFDOWo0S0JPYmh3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IjJyQXd1bEEwbFZ2QlNvck5BS1lDNVEiLCJleHBpcnkiOiIxNjk3MjI3MDgzIiwidWlkIjoiYW50b25pb2NuZXRAZ21haWwuY29tIn0="
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1bc0ba97ccde17ac243298775f217b67\""
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "0a640f3e-a312-423e-bf74-3e2cc3c405df"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.004614"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 6,\n    \"name\": \"Loja 10\",\n    \"created_at\": \"2023-09-29T20:12:46.422Z\",\n    \"updated_at\": \"2023-09-29T20:12:46.422Z\",\n    \"user_id\": 3\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete",
@@ -505,26 +881,102 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/stores/1",
+							"raw": "{{baseUrl}}/stores/5",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"stores",
-								"1"
+								"5"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/stores/5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"stores",
+										"5"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "access-token",
+									"value": "rY_eyomcY5H1C9j4KBObhw"
+								},
+								{
+									"key": "token-type",
+									"value": "Bearer"
+								},
+								{
+									"key": "client",
+									"value": "2rAwulA0lVvBSorNAKYC5Q"
+								},
+								{
+									"key": "expiry",
+									"value": "1697227083"
+								},
+								{
+									"key": "uid",
+									"value": "antoniocnet@gmail.com"
+								},
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhY2Nlc3MtdG9rZW4iOiJyWV9leW9tY1k1SDFDOWo0S0JPYmh3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IjJyQXd1bEEwbFZ2QlNvck5BS1lDNVEiLCJleHBpcnkiOiIxNjk3MjI3MDgzIiwidWlkIjoiYW50b25pb2NuZXRAZ21haWwuY29tIn0="
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "8ac98077-fda1-4639-a439-ecb85850d53d"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.005436"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "Create",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "auth",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Loja 1\",\n    \"user_id\": 1\n}",
+							"raw": "{\n    \"name\": \"Loja 10\",\n    \"user_id\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -541,33 +993,128 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "auth",
+										"value": "{{auth}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Loja 2\",\n    \"user_id\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/stores",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"stores"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Location",
+									"value": "http://localhost:3000/api/stores/5"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "access-token",
+									"value": "rY_eyomcY5H1C9j4KBObhw"
+								},
+								{
+									"key": "token-type",
+									"value": "Bearer"
+								},
+								{
+									"key": "client",
+									"value": "2rAwulA0lVvBSorNAKYC5Q"
+								},
+								{
+									"key": "expiry",
+									"value": "1697227083"
+								},
+								{
+									"key": "uid",
+									"value": "antoniocnet@gmail.com"
+								},
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhY2Nlc3MtdG9rZW4iOiJyWV9leW9tY1k1SDFDOWo0S0JPYmh3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IjJyQXd1bEEwbFZ2QlNvck5BS1lDNVEiLCJleHBpcnkiOiIxNjk3MjI3MDgzIiwidWlkIjoiYW50b25pb2NuZXRAZ21haWwuY29tIn0="
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ab0e236bd1fda136029604e095a4d77a\""
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "fa526f3f-59d8-4dbb-8258-7fd54075fff0"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "3.038307"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 5,\n    \"name\": \"Loja 2\",\n    \"created_at\": \"2023-09-29T20:09:58.281Z\",\n    \"updated_at\": \"2023-09-29T20:09:58.281Z\",\n    \"user_id\": 3\n}"
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "Bearer eyJhY2Nlc3MtdG9rZW4iOiJyWV9leW9tY1k1SDFDOWo0S0JPYmh3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6IjJyQXd1bEEwbFZ2QlNvck5BS1lDNVEiLCJleHBpcnkiOiIxNjk3MjI3MDgzIiwidWlkIjoiYW50b25pb2NuZXRAZ21haWwuY29tIn0=",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				},
 				{
-					"name": "Update",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Neto\",\n    \"user_id\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/stores",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"stores"
-							]
-						}
-					},
-					"response": []
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}

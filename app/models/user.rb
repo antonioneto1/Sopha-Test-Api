@@ -15,11 +15,14 @@ class User < ActiveRecord::Base
 
   has_many :stores, dependent: :destroy
 
-  before_validation :set_uid
+  # Associações
+  has_many :stores
 
-  private
+  # Validações
+  validates :name, presence: true
+  validates :email, presence: true, uniqueness: true
 
-  def set_uid
-    self[:uid] = self[:email] if self[:uid].blank? && self[:email].present?
-  end
+  # Bcrypt
+  #has_secure_password
+
 end
