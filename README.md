@@ -1,62 +1,74 @@
+## Sopha API
+
+### Sobre o Projeto
+
+Este projeto é uma API Rails que permite a criação de usuários e lojas, além de permitir a autenticação de usuários e a atualização de lojas.
+
+### Pré-requisitos
+
+- Ruby 2.7.0
+- Rails 5.x
+### Setup de Desenvolvimento Docker
+
+Utilizando Docker e Docker Compose:
+
+```sh
+cd Sopha-Test-Api
+	ARG_USER_UID=$(id -u) ARG_USER_GID=$(id -g) docker compose config
+  ARG_USER_UID=$(id -u) ARG_USER_GID=$(id -g) docker compose build
+  docker compose up -d
+  docker compose exec app bash
+    bundle
+    rails db:drop db:create db:migrate db:seed
+		rspec
+    rails s
+    # Brower: http://localhost:3000
+    # Press: CTRL+C
+    exit
+  docker compose down
+```
+
+### Como Rodar o Projeto
+
+1. Inicie o servidor Rails:
+
+```bash
+docker-compose up -d
+docker compose exec app bash
+  rails s
+```
+
+Agora a API deve estar disponível em `http://localhost:3000/`.
 
 
-# Avaliação Sopha
-## Para iniciar
-Realize um **fork** desse repositório
-**clone** o projeto do fork
+### Deploy no EC2
 
-Execute o comando para provisionar a aplicação:
+A API também está disponível no endereço: [http://18.219.103.88:3000](http://18.219.103.88:3000)
+conforme solicitado no desafio.
 
-    $ docker-compose up --build
+### Como Rodar os Testes
 
-## Sobre
-O candidato deve fazer um **fork** deste repositório e realizar um **pull request** com o código do teste pronto antes do prazo de vencimento do desafio.
+1. RSpec para testes de unidade e integração:
 
-## Objetivo
+    ```bash
+    rspec
+    ```
 
-O candidato deve criar uma **API** responsável por gerenciar um catalogo de lojas (**Store**)  e hospedá-lo em uma instância **AWS EC2**.
+2. RSwag para geração da documentação Swagger:
 
-## Estrutura
-Essa **API** deve ser constituída por:
+    ```bash
+    rake rswag:specs:swaggerize
+    ```
 
- - Um Model **User** com os atributos **name, email e password**
- - Um Model **Store** com os atributos **name, user_id**
- -  Onde:
-	 - **Store** pertence à **User**
-	 
-## Funcionalidade
-As seguintes requisições devem ser possíveis:
+### Endpoints Disponíveis
 
- - Processo de autenticação de um **User** (Signup, Signin)
-  - Requisições de **CRUD** (Create, Read, Update, Delete) para **Store**  (Estas requisições só devem ser possíveis se o usuário estiver autenticado)
+Descrição rápida dos principais endpoints, como:
+- `POST /auth` - Cria um novo usuário
+- `POST /auth/sign_in` - Autentica um usuário
+- `GET /stores` - Retorna todos as lojas 
+- `POST /stores` - Cria uma nova loja
+- `PUT /stores/:id` - Atualiza uma loja específica
+- `DELETE /stores/:id` - Deleta uma loja específica
+- `GET /stores/:id/`  - Retorna uma loja específica`
 
-
-## Conhecimentos necessários
--  Ruby
--  Ruby on Rails
--  AWS EC2
--  Servidores HTTP
--  SQL
--  Postgres 
--   Git
-
-## Requisitos
-
--   Docker
-
-## O que esperamos da solução
- -  A aplicacão **DEVE** estar hospedada em uma instância **AWS EC2**
- -  Que todas as ações requisitadas funcionem.
- -  Que haja testes automatizados sobre essas ações (TDD).
- -  Que seja possível testar essas ações do ambiente local (Localhost) na **aplicação hospedada**.
- -  Instruções de uso no README.md
-	 - Como rodar os testes da aplicação
-	 - Quais os **endpoints** devo acessar para realizar as requisições esperadas na **aplicação hospedada**
-	 - Quais os **parâmetros** e/ou **cabeçalhos**  devo enviar para realizar cada uma das requisições esperadas na **aplicação hospedada**
- -  É **Opcional** utilizar **docker** na **aplicação hospedada**.
- - Uso de **gems** adicionais também é opcional
-
-## O que avaliaremos
-
- - Funcionalidade
- - Boas práticas
+Para detalhes completos, consulte a documentação na coleção exportada do postman \api_postman_collection.json ou pelo endereço https://documenter.getpostman.com/view/30124778/2s9YJaYPyi
