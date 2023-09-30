@@ -13,16 +13,11 @@ class User < ActiveRecord::Base
 
   include DeviseTokenAuth::Concerns::User
 
-  has_many :stores, dependent: :destroy
-
   # Associações
-  has_many :stores
+  has_many :stores, dependent: :destroy
 
   # Validações
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
-
-  # Bcrypt
-  #has_secure_password
 
 end
