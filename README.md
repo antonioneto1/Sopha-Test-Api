@@ -41,11 +41,6 @@ docker compose exec app bash
 Agora a API deve estar disponível em `http://localhost:3000/`.
 
 
-### Deploy no EC2
-
-A API também está disponível no endereço: [http://18.219.103.88:3000](http://18.219.103.88:3000)
-conforme solicitado no desafio.
-
 ### Como Rodar os Testes
 
 1. RSpec para testes de unidade e integração:
